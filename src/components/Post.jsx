@@ -4,27 +4,26 @@ import { format, formatDistanceToNow } from 'date-fns'
 
 import { Avatar } from './Avatar'
 import { Comment } from './Comment'
+
 import styles from './Post.module.css'
 
 export function Post({ author, content, publishedAt }) {
   const [comments, setComments] = React.useState([])
-  const [newCommentText, setNewCommentText] = React.useState('')
 
-  function handleNewCommentPost() {
+  function handleNewCommentPost(formData) {
     event.preventDefault()
 
     const newCommentId = Math.floor(Math.random() * 10e12)
+    const newCommentContent = formData.get('comment')
 
     setComments(previousComments => [
       ...previousComments,
-      { id: newCommentId, content: newCommentText, publishedAt: new Date() }
+      { id: newCommentId, content: newCommentContent, publishedAt: new Date() }
     ])
-    setNewCommentText('')
   }
 
   function handleNewCommentChange() {
     event.target.setCustomValidity('')
-    setNewCommentText(event.target.value)
   }
 
   function handleNewCommentInvalid() {
@@ -56,8 +55,6 @@ export function Post({ author, content, publishedAt }) {
     return <p key={id}>{item.data}</p>
   })
 
-  const isNewCommentEmpty = newCommentText.length === 0
-
   return (
     <article className={styles.post}>
       <header>
@@ -85,20 +82,19 @@ export function Post({ author, content, publishedAt }) {
         {parsedContent}
       </div>
 
-      <form onSubmit={handleNewCommentPost} className={styles.commentForm}>
+      <form action={handleNewCommentPost} className={styles.commentForm}>
         <strong>Give a feedback</strong>
 
         <textarea
           name='comment'
           placeholder='Leave your comment'
-          value={newCommentText}
           onChange={handleNewCommentChange}
           onInvalid={handleNewCommentInvalid}
           required
         />
 
         <footer>
-          <button type='submit' disabled={isNewCommentEmpty}>
+          <button type='submit'>
             Send comment
           </button>
         </footer>

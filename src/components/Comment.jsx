@@ -1,8 +1,11 @@
-import { ThumbsUp, Trash } from '@phosphor-icons/react'
-import styles from './Comment.module.css'
-import { Avatar } from './Avatar'
 import React from 'react'
+
+import { ThumbsUp, Trash } from '@phosphor-icons/react'
 import { format, formatDistanceToNow } from 'date-fns'
+
+import { Avatar } from './Avatar'
+
+import styles from './Comment.module.css'
 
 export function Comment({ comment, onDeleteComment }) {
   const [likeCount, setLikeCount] = React.useState(0)
@@ -15,10 +18,10 @@ export function Comment({ comment, onDeleteComment }) {
     setLikeCount(previousCount => previousCount + 1)
   }
 
-    const parsedPublishDate = format(comment.publishedAt, "LLLL d',' HH:mm aa")
-    const parsedPublishDateToNow = formatDistanceToNow(comment.publishedAt, {
-      addSuffix: true
-    })
+  const parsedPublishDate = format(comment.publishedAt, "LLLL d',' HH:mm aa")
+  const parsedPublishDateToNow = formatDistanceToNow(comment.publishedAt, {
+    addSuffix: true
+  })
 
   return (
     <div className={styles.comment}>

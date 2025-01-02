@@ -1,7 +1,8 @@
 import { PencilLine } from '@phosphor-icons/react'
 
-import styles from './Sidebar.module.css'
 import { Avatar } from './Avatar'
+
+import styles from './Sidebar.module.css'
 
 export function Sidebar() {
   return (
@@ -15,14 +16,12 @@ export function Sidebar() {
         <Avatar hasBorder className={styles.avatar} src='https://github.com/yuriuliam.png' />
 
         <strong>Yuri Uliam</strong>
-        <span>Web Developer</span>
+        <span>Frontend Software Engineer</span>
       </div>
 
       <footer>
         <a href='#'>
-          <PencilLine size={20} />
-
-          Edit your profile
+          <PencilLine size={20} /> Edit your profile
         </a>
       </footer>
     </aside>
