@@ -2,19 +2,23 @@ import React from 'react'
 
 import { format, formatDistanceToNow } from 'date-fns'
 
+import { PostContentType } from '../shared/PostContentType'
+import { CommentData, PostData } from '../shared/types'
 import { Avatar } from './Avatar'
 import { Comment } from './Comment'
 
 import styles from './Post.module.css'
 
-export function Post({ author, content, publishedAt }) {
-  const [comments, setComments] = React.useState([])
+export const Post: React.FC<PostData> = ({ author, content, publishedAt }) => {
+  const [comments, setComments] = React.useState<CommentData[]>([])
 
-  function handleNewCommentPost(formData) {
-    event.preventDefault()
-
+  function handleNewCommentPost(formData: FormData) {
     const newCommentId = Math.floor(Math.random() * 10e12)
     const newCommentContent = formData.get('comment')
+
+    if (typeof newCommentContent !== 'string') {
+      throw new Error('Invalid comment format!')
+    }
 
     setComments(previousComments => [
       ...previousComments,
@@ -22,15 +26,15 @@ export function Post({ author, content, publishedAt }) {
     ])
   }
 
-  function handleNewCommentChange() {
+  function handleNewCommentChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity('')
   }
 
-  function handleNewCommentInvalid() {
+  function handleNewCommentInvalid(event: React.InvalidEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity('Field is required!')
   }
 
-  function handleCommentRemove(commentIdToDelete) {
+  function handleCommentRemove(commentIdToDelete: number) {
     setComments(previousComments => previousComments.filter(previousComment => {
       return previousComment.id !== commentIdToDelete
     }))
@@ -44,7 +48,7 @@ export function Post({ author, content, publishedAt }) {
   const parsedContent = content.map(item => {
     const id = `${item.type}(${item.data})`
 
-    if (item.type === 'link' && URL.canParse(item.anchor)) {
+    if (item.type === PostContentType.Link && URL.canParse(item.anchor)) {
       return (
         <p key={id}>
           <a href={item.anchor}>{item.data}</a>

@@ -3,11 +3,17 @@ import React from 'react'
 import { ThumbsUp, Trash } from '@phosphor-icons/react'
 import { format, formatDistanceToNow } from 'date-fns'
 
+import { CommentData } from '../shared/types'
 import { Avatar } from './Avatar'
 
 import styles from './Comment.module.css'
 
-export function Comment({ comment, onDeleteComment }) {
+type CommentProps = {
+  comment: CommentData
+  onDeleteComment: (commentIdToDelete: number) => void
+}
+
+export const Comment: React.FC<CommentProps> = ({ comment, onDeleteComment }) => {
   const [likeCount, setLikeCount] = React.useState(0)
 
   function handleCommentDeletion() {
